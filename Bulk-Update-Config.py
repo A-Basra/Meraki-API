@@ -1,11 +1,34 @@
-#Version 1.0.1
+#Version 2.0.0 GUI 
+#By Aman Basra
 
+import tkinter as TK
+from tkinter import filedialog
 import meraki
 import pandas as pd
 import time
 
+path = None
+def browse():
+    path = filedialog.askdirectory()
+    return(path)
+
+#Create GUI Window
+frame = TK.Tk()
+frame.title("Meraki Bulk Update Tool")
+frame.geometry('500x500')
+
+APIlbl  = TK.Label(frame, text="API Key", anchor= "w", pady=5)
+getAPI = TK.Text(frame,
+                    height= 1,
+                    width = 50,)
+
+CSVPathlbl  = TK.Label(frame, text="CSV", anchor= "w", pady=5)
+printCSVPathlbl  = TK.Label(frame, text=path, anchor= "w", pady=5)
+
+browseButton =TK.Button(frame, text='Browse', command=browse)
+
 # API Setup
-API_KEY = '<API_KEY>'
+API_KEY = getAPI.get(1.0, 'end-1c')
 dashboard = meraki.DashboardAPI(API_KEY)
 network_id = '<NETWORK-ID>'
 
@@ -42,3 +65,12 @@ for num, asset in enumerate(Assets):
         print(response)
     except:
         continue
+
+APIlbl.pack()
+getAPI.pack()
+CSVPathlbl.pack()
+CSVPathlbl.pack()
+browseButton.pack()
+
+frame.mainloop()
+
