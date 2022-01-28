@@ -8,8 +8,12 @@ import meraki
 import pandas as pd
 import time
 
+tmp = []
+
 def browse():
-    path = filedialog.askdirectory()
+    path = filedialog.askopenfilename()
+    printCSVPathlbl.config(text=path)
+    tmp.append(path)
     return(path)
 
 def getOrgID():
@@ -51,7 +55,7 @@ def update():
     # Import CSV
     cols = ["Name", "Serial", "Notes"]
 
-    df = pd.read_csv("<PATH TO CSV>", usecols=cols)
+    df = pd.read_csv(tmp[0], usecols=cols)
 
     Serials = []
     Assets = []
@@ -82,7 +86,6 @@ def update():
             continue
 
 
-
 #Create GUI Window
 frame = TK.Tk()
 frame.title("Meraki Bulk Update Tool")
@@ -98,7 +101,7 @@ printCSVPathlbl  = TK.Label(frame, text="", pady=5)
 orgidlbl  = TK.Label(frame, text="", pady=5)
 
 browseButton =TK.Button(frame, text='Browse', command=browse)
-submitButton =TK.Button(frame, text='Submit', command=getNetworkID)
+submitButton =TK.Button(frame, text='Submit', command=update)
 
 Output = scrolledtext.ScrolledText(frame, height='20', width='100', wrap="word")
 
